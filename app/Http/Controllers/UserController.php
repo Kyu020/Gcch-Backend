@@ -76,7 +76,7 @@ class UserController extends Controller
         ];
 
         return redirect()->away(
-            env('FRONTEND_URL') . '/redirecting?payload=' . urlencode(json_encode($payload))
+            env('FRONTEND_URL') . '/redirecting?payload=' . urlencode(json_encode($payload, JSON_UNESCAPED_SLASHES))
         );
     }
 
