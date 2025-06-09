@@ -36,4 +36,4 @@ RUN chmod -R 775 /var/www/storage
 EXPOSE 8000
 
 # Start PHP built-in server
-CMD php artisan serve --host=0.0.0.0 --port=8000
+CMD php artisan serve --host=0.0.0.0 --port=8000 --verbose
