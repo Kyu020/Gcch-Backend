@@ -56,7 +56,7 @@ class UserController extends Controller
             ]
         );
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('token')->plainTextToken;
 
         // Only send necessary user info
         $userData = [
