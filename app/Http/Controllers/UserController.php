@@ -59,17 +59,25 @@ class UserController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
+        // Only send necessary user info
+        $userData = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+        ];
+
+        $payload = [
             'token' => $token,
-            'user' => [
-                'id' => $user->id,
-                'email' => $user->email,
-                'role' => $user->role,
-            ],
-            'redirect' => $user->role
-                ? ($user->role === 'applicant' ? '/applicantdash' : '/companydash')
-                : "/signup/{$user->id}",
-        ]);
+            'user' => $userData,
+            'redirect' => (empty($user->role) || is_null($user->role))
+                ? "/signup/{$user->id}"
+                : ($user->role === 'applicant' ? '/applicantdash' : '/companydash')
+        ];
+
+        return redirect()->away(
+            env('FRONTEND_URL') . '/redirecting?payload=' . urlencode(json_encode($payload))
+        );
     }
 
 
