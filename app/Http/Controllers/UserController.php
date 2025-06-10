@@ -78,11 +78,15 @@ class UserController extends Controller
                 : "/signup/{$user->id}",
         ];
 
-        return redirect()->away(
-            env('FRONTEND_URL') . '/#/redirecting?payload=' . urlencode(json_encode($payload))
-        );
-    }
+        $encodedPayload = urlencode(json_encode($payload));
+        $redirectUrl = env('FRONTEND_URL') . '/#/redirecting?payload=' . $encodedPayload;
+        
+        // Add this line to see what's being generated
+        \Log::info('Generated redirect URL: ' . $redirectUrl);
+        \Log::info('Payload: ' . json_encode($payload));
 
+        return redirect()->away($redirectUrl);
+   }
 
     public function selectRole($userId){
         $user = User::findOrFail($userId);
