@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:5173','http://localhost:5174','http://localhost:8080', 'https://gcch-frontend.vercel.app'],
+    'allowed_origins' => ['https://gcch-frontend.vercel.app', 'http://localhost:5173','http://localhost:5174','http://localhost:8080'],
 
     'allowed_origins_patterns' => ['*'],
 
