@@ -43,7 +43,7 @@ class UserController extends Controller
         return Socialite::driver('google')->stateless()->with(['prompt' => 'consent'])->redirect();
     }
 
-    public function handleGoogleCallback(Request $request)
+   public function handleGoogleCallback(Request $request)
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
 
@@ -59,24 +59,19 @@ class UserController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        // Only send necessary user info
-        $userData = [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'role' => $user->role,
-        ];
-
-        $payload = [
+        return response()->json([
             'token' => $token,
-            'user' => $userData,
-            'redirect' => (empty($user->role) || is_null($user->role))
-                ? "/signup/{$user->id}"
-                : ($user->role === 'applicant' ? '/applicantdash' : '/companydash')
-        ];
-
-        return response()->json($payload);
+            'user' => [
+                'id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+            ],
+            'redirect' => $user->role
+                ? ($user->role === 'applicant' ? '/applicantdash' : '/companydash')
+                : "/signup/{$user->id}",
+        ]);
     }
+
 
     public function selectRole($userId){
         $user = User::findOrFail($userId);
