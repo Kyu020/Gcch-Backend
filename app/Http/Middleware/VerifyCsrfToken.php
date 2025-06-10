@@ -28,14 +28,18 @@ class VerifyCsrfToken extends Middleware
      */
     public function handle($request, Closure $next)
     {
-        if ($request->isMethod('post') || $request->isMethod('put') || $request->isMethod('delete')) {
-            if (!$request->session()->token() || $request->input('_token') !== $request->session()->token()){
-                throw new TokenMismatchException;
-            }
+        // Skip CSRF for API routes
+        if ($request->is('api/*')) {
+            return $next($request);
         }
-
-        return $next($request);
         
+        // Skip CSRF for requests with Bearer tokens
+        if ($request->bearerToken()) {
+            return $next($request);
+        }
+        
+        // Use Laravel's built-in CSRF logic for everything else
+        return parent::handle($request, $next);
     }
 
     /**
