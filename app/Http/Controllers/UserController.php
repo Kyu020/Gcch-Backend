@@ -75,9 +75,7 @@ class UserController extends Controller
                 : ($user->role === 'applicant' ? '/applicantdash' : '/companydash')
         ];
 
-        return redirect()->away(
-            env('FRONTEND_URL') . '/redirecting?payload=' . urlencode(json_encode($payload, JSON_UNESCAPED_SLASHES))
-        );
+        return response()->json($payload);
     }
 
     public function selectRole($userId){
