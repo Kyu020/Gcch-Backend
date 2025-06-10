@@ -79,7 +79,7 @@ class UserController extends Controller
         ];
 
         $encodedPayload = urlencode(json_encode($payload));
-        $redirectUrl = env('FRONTEND_URL') . '/#/redirecting?payload=' . $encodedPayload;
+        $redirectUrl = 'https://gcch-frontend.vercel.app/#/redirecting?payload=' . $encodedPayload;
         
         // Add this line to see what's being generated
         \Log::info('Generated redirect URL: ' . $redirectUrl);
