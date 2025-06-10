@@ -43,8 +43,7 @@ class UserController extends Controller
         return Socialite::driver('google')->stateless()->with(['prompt' => 'consent'])->redirect();
     }
 
-   public function handleGoogleCallback(Request $request)
-    {
+   public function handleGoogleCallback(Request $request){
         $googleUser = Socialite::driver('google')->stateless()->user();
 
         $user = User::firstOrCreate(
@@ -70,9 +69,9 @@ class UserController extends Controller
         $payload = [
             'token' => $token,
             'user' => $userData,
-            'redirect' => (empty($user->role) || is_null($user->role))
-                ? "/signup/{$user->id}"
-                : ($user->role === 'applicant' ? '/applicantdash' : '/companydash')
+            'redirect' => $user->role
+                ? ($user->role === 'applicant' ? '/applicantdash' : '/companydash')
+                : "/signup/{$user->id}",
         ];
 
         return redirect()->away(
