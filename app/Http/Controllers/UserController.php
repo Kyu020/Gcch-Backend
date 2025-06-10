@@ -68,7 +68,11 @@ class UserController extends Controller
 
         $payload = [
             'token' => $token,
-            'user' => $userData,
+            'user' => [
+                'id'=>$user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+            ],
             'redirect' => $user->role
                 ? ($user->role === 'applicant' ? '/applicantdash' : '/companydash')
                 : "/signup/{$user->id}",
