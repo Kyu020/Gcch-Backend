@@ -14,7 +14,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
         protected $except = [
-            
+            '*'
        ];
 
     /**
@@ -29,17 +29,7 @@ class VerifyCsrfToken extends Middleware
     public function handle($request, Closure $next)
     {
         // Skip CSRF for API routes
-        if ($request->is('api/*')) {
             return $next($request);
-        }
-        
-        // Skip CSRF for requests with Bearer tokens
-        if ($request->bearerToken()) {
-            return $next($request);
-        }
-        
-        // Use Laravel's built-in CSRF logic for everything else
-        return parent::handle($request, $next);
     }
 
     /**
